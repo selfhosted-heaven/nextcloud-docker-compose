@@ -1,0 +1,35 @@
+---
+version: "3.7"
+services:
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud
+    container_name: nextcloud
+    environment:
+      - PUID=1024 # The user ID of the current user
+      - PGID=100 # The group ID of the current user
+      - TZ=Europe/Amsterdam # The Timezone where you live
+    volumes:
+      - /volume1/docker/config/Nextcloud:/config
+      - /volume1/docker/Nextcloud:/data
+    ports:
+      - 4433:443
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: lscr.io/linuxserver/mariadb
+    container_name: mariadb
+    environment:
+      - PUID=1024 # The user ID of the current user
+      - PGID=100 # The group ID of the current user
+      - TZ=Europe/Amsterdam # The Timezone where you live
+      - MYSQL_ROOT_PASSWORD=supersecretpassword
+      - MYSQL_DATABASE=nextclouddatabase
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+    volumes:
+      - /volume1/docker/config/MariaDB:/config
+    ports:
+      - 3306:3306
+    restart: unless-stopped
