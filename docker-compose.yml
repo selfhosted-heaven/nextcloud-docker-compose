@@ -30,6 +30,4 @@ services:
       - MYSQL_PASSWORD=nextcloud
     volumes:
       - /volume1/docker/config/MariaDB:/config
-    ports:
-      - 3306:3306
     restart: unless-stopped
